@@ -13,7 +13,7 @@ echo 'Hi, my name is '.$name,'. and I am a level '.$level.'
 
 echo '<br/>';
 
-$hoursworked = 10;
+$hoursworked = $_GET['hours'];;
 $rate = 12;
 
 
