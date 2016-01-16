@@ -19,12 +19,12 @@
  * $rate = 12;
  *
  *
- * if ($hoursworked > 40) {
+ * if ($hoursworked >40) {
  * $total = $hoursworked * $rate * 1.5;
  * } else {
  * $total = $hoursworked * $rate;
  * }
- * echo ($total > 0) ? 'You owe me '.$total : "You're welcome";
+ * echo ($total >0) ? 'You owe me '.$total : "You're welcome";
  */
 
 $position = $_GET['board'];
@@ -34,8 +34,9 @@ if (!isset($_GET['board'])) {
     echo 'No board given';
 } else {
     $game = new Game($position);
-    if ($game->winner2('x')) echo 'You win.';
-    else if ($game->winner2('o')) echo 'I win.';
+    $game->display();
+    if ($game->winner2('x')) echo 'I win.';
+    else if ($game->winner2('o')) echo 'You win.';
     else echo 'No winner yet.';
 }
 
@@ -49,6 +50,34 @@ class Game
         $this->position = str_split($squares);
 
     }
+
+    function display()
+    {
+        echo '<table cols="3" style="font-size:large; font-weight:bold">';
+        echo '<tr>';
+        for ($pos = 0; $pos < 9; $pos++) {
+            echo $this->show_cell($pos);
+            if ($pos % 3 == 2) echo '</tr><tr>';
+        }
+        echo '</tr>';
+        echo '</table>';
+    }
+
+    function show_cell($which)
+    {
+        $token = $this->position[$which];
+        // deal with the easy case
+        if ($token <> '-') return '<td>' . $token . '</td>';
+
+        $this->newposition = $this->position;
+
+        $this->newposition[$which] = 'o';
+
+        $move = implode($this->newposition);
+        $link = '/COMP4711-Lab1/?board=' . $move;
+        return '<td><a href="' . $link . '">-</a></td>';
+    }
+
 
     function winner2($token)
     {
