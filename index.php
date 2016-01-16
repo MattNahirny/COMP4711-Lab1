@@ -28,93 +28,57 @@
  */
 
 $position = $_GET['board'];
-$squares = str_split($position);
 
 if (!isset($_GET['board'])) {
+
     echo 'No board given';
 } else {
-    if (winner2('x', $squares)) echo 'You win.';
-    else if (winner2('o', $squares)) echo 'I win.';
+    $game = new Game($position);
+    if ($game->winner2('x')) echo 'You win.';
+    else if ($game->winner2('o')) echo 'I win.';
     else echo 'No winner yet.';
 }
-function winner2($token, $position)
+
+
+class Game
 {
-    $result = false;
-    for ($row = 0; $row < 3; $row++) {
-        if ($position[3 * $row] == $token &&
-            $position[3 * $row + 1] == $token &&
-            $position[3 * $row + 2] == $token
-        )
+    var $position;
+
+    function __construct($squares)
+    {
+        $this->position = str_split($squares);
+
+    }
+
+    function winner2($token)
+    {
+        $result = false;
+        for ($row = 0; $row < 3; $row++) {
+            if ($this->position[3 * $row] == $token &&
+                $this->position[3 * $row + 1] == $token &&
+                $this->position[3 * $row + 2] == $token
+            )
+                $result = true;
+        }
+        for ($col = 0; $col < 3; $col++) {
+            if ($this->position[$col] == $token &&
+                $this->position[$col + 3] == $token &&
+                $this->position[$col + 6] == $token
+            )
+                $result = true;
+        }
+        if ($this->position[0] == $token &&
+            $this->position[4] == $token &&
+            $this->position[8] == $token
+        ) {
             $result = true;
-    }
-    for ($col = 0; $col < 3; $col++) {
-        if ($position[$col] == $token &&
-            $position[$col + 3] == $token &&
-            $position[$col + 6] == $token
-        )
+        }
+        if ($this->position[2] == $token &&
+            $this->position[4] == $token &&
+            $this->position[6] == $token
+        ) {
             $result = true;
+        }
+        return $result;
     }
-    if ($position[0] == $token &&
-        $position[4] == $token &&
-        $position[8] == $token
-    ) {
-        $result = true;
-    }
-    if ($position[2] == $token &&
-        $position[4] == $token &&
-        $position[6] == $token
-    ) {
-        $result = true;
-    }
-    return $result;
 }
-
-
-function winner($token, $position)
-{
-    $won = false;
-    if (($position[0] == $token) &&
-        ($position[1] == $token) &&
-        ($position[2] == $token)
-    ) {
-        $won = true;
-    } else if (($position[3] == $token) &&
-        ($position[4] == $token) &&
-        ($position[5] == $token)
-    ) {
-        $won = true;
-    } else if (($position[6] == $token) &&
-        ($position[7] == $token) &&
-        ($position[8] == $token)
-    ) {
-        $won = true;
-    } else if (($position[0] == $token) &&
-        ($position[3] == $token) &&
-        ($position[6] == $token)
-    ) {
-        $won = true;
-    } else if (($position[1] == $token) &&
-        ($position[4] == $token) &&
-        ($position[7] == $token)
-    ) {
-        $won = true;
-    } else if (($position[2] == $token) &&
-        ($position[5] == $token) &&
-        ($position[8] == $token)
-    ) {
-        $won = true;
-    } else if (($position[0] == $token) &&
-        ($position[4] == $token) &&
-        ($position[8] == $token)
-    ) {
-        $won = true;
-    } else if (($position[2] == $token) &&
-        ($position[4] == $token) &&
-        ($position[6] == $token)
-    ) {
-        $won = true;
-    }
-    return $won;
-}
-
-
