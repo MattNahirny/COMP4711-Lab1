@@ -34,7 +34,9 @@ if (!isset($_GET['board'])) {
     echo 'No board given';
 } else {
     $game = new Game($position);
+    $game->take_move();
     $game->display();
+
     if ($game->winner2('x')) echo 'I win.';
     else if ($game->winner2('o')) echo 'You win.';
     else echo 'No winner yet.';
@@ -49,6 +51,14 @@ class Game
     {
         $this->position = str_split($squares);
 
+    }
+    function take_move() {
+        for ($i = 0; $i < 9; $i++) {
+            if ($this->position[$i] == "-") {
+                $this->position[$i] = "x";
+                break;
+            }
+        }
     }
 
     function display()
