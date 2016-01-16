@@ -1,4 +1,5 @@
-<?php
+<?php ini_set('display_errors', 'On');
+error_reporting(E_ALL);
 /**
  * Created by PhpStorm.
  * User: Matt
